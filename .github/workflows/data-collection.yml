@@ -10,19 +10,21 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     
     - name: Setup Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: '16'
+        cache: 'npm'
         
+    - name: Install dependencies
+      run: npm install
+      
     - name: Build with token
       run: |
         # 替换index.html中的特殊标记为实际Token
         sed -i "s/__GH_DATA_TOKEN__/${{ secrets.GH_DATA_COLLECTION_TOKEN }}/g" index.html
-
-        npm install
         npm run build
         
     - name: Deploy to GitHub Pages
